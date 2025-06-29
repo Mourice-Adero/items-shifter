@@ -10,7 +10,12 @@ type toDoTask = {
 };
 
 const ToDoList = () => {
-  const [tasks, setTasks] = useState<toDoTask[]>([]);
+  const [tasks, setTasks] = useState<toDoTask[]>([
+    { id: 1, title: "Task 1", status: "Done" },
+    { id: 2, title: "Task 2", status: "Pending" },
+    { id: 3, title: "Task 3", status: "Done" },
+    { id: 4, title: "Task 4", status: "Pending" },
+  ]);
   const [newTaskName, setNewTaskName] = useState("");
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,21 +31,30 @@ const ToDoList = () => {
         title: newTaskName,
         status: "Pending",
       };
-      console.log(newTask.id);
-
       setTasks([...tasks, newTask]);
       setNewTaskName("");
     }
   };
-  const removeTask = (taskID: number) => {
-    const filteredTasks = tasks.filter((task) => task.id != taskID);
-    console.log(filteredTasks);
+  const removeTask = (taskId: number) => {
+    const filteredTasks = tasks.filter((task) => task.id != taskId);
     setTasks(filteredTasks);
+  };
+  const toggleStatus = (taskId: number) => {
+    tasks.map((task) => {
+      if (task.id == taskId) {
+        if (task.status === "Done") {
+          task.status = "Pending";
+        } else {
+          task.status = "Done";
+        }
+      }
+      setTasks([...tasks]);
+    });
   };
 
   return (
     <div className="flex justify-center p-20">
-      <div className="py-10 px-20 bg-linear-to-tl from-cyan-500 to-blue-500 rounded-3xl w-2/3">
+      <div className="py-10 px-20 bg-linear-to-tl from-cyan-500 to-blue-500 rounded-3xl w-2/3 min-h-80">
         <div className="text-center">
           <h1 className="text-white text-4xl">TASK</h1>
           <p className="">
@@ -73,6 +87,7 @@ const ToDoList = () => {
             Add
           </button>
         </form>
+        {tasks.length <= 0 ? <p>There are no tasks in your list</p> : ""}
         <ul>
           {tasks.map((task) => {
             return (
@@ -81,14 +96,19 @@ const ToDoList = () => {
                 className="flex flex-wrap justify-between w-full bg-white rounded my-5 p-4"
               >
                 <div className="flex">
-                  <div className="rounded-full border border-gray-500 flex justify-center content-center p-1 mr-4">
+                  <button
+                    onClick={() => toggleStatus(task.id)}
+                    className="rounded-full border border-gray-500 flex justify-center content-center p-1 mr-4"
+                  >
                     {task.status == "Pending" ? (
                       <BiCircle className="text-cyan-500 text-2xl" />
                     ) : (
                       <TiTick className="text-cyan-500 text-2xl" />
                     )}
-                  </div>
-                  <p>{task.title}</p>
+                  </button>
+                  <p className={task.status == "Done" ? "line-through" : ""}>
+                    {task.title}
+                  </p>
                 </div>
                 <button
                   className="rounded-full border-gray-400 text-lg border p-2"
