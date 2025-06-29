@@ -4,17 +4,17 @@ import { CgClose } from "react-icons/cg";
 import { TiTick } from "react-icons/ti";
 
 type toDoTask = {
-  id: number;
+  id: string;
   title: string;
   status: string;
 };
 
 const ToDoList = () => {
   const [tasks, setTasks] = useState<toDoTask[]>([
-    { id: 1, title: "Task 1", status: "Done" },
-    { id: 2, title: "Task 2", status: "Pending" },
-    { id: 3, title: "Task 3", status: "Done" },
-    { id: 4, title: "Task 4", status: "Pending" },
+    { id: "1", title: "Task 1", status: "Done" },
+    { id: "2", title: "Task 2", status: "Pending" },
+    { id: "3", title: "Task 3", status: "Done" },
+    { id: "4", title: "Task 4", status: "Pending" },
   ]);
   const [newTaskName, setNewTaskName] = useState("");
 
@@ -25,7 +25,7 @@ const ToDoList = () => {
   const addTask = (e: FormEvent) => {
     e.preventDefault();
     if (newTaskName !== "") {
-      const newID = tasks.length + 1;
+      const newID = crypto.randomUUID();
       const newTask = {
         id: newID,
         title: newTaskName,
@@ -35,11 +35,11 @@ const ToDoList = () => {
       setNewTaskName("");
     }
   };
-  const removeTask = (taskId: number) => {
+  const removeTask = (taskId: string) => {
     const filteredTasks = tasks.filter((task) => task.id != taskId);
     setTasks(filteredTasks);
   };
-  const toggleStatus = (taskId: number) => {
+  const toggleStatus = (taskId: string) => {
     tasks.map((task) => {
       if (task.id == taskId) {
         if (task.status === "Done") {
