@@ -10,12 +10,7 @@ type toDoTask = {
 };
 
 const ToDoList = () => {
-  const [tasks, setTasks] = useState<toDoTask[]>([
-    { id: 1, title: "Task 1", status: "Done" },
-    { id: 2, title: "Task 2", status: "Pending" },
-    { id: 3, title: "Task 2", status: "Done" },
-    { id: 4, title: "Task 4", status: "Pending" },
-  ]);
+  const [tasks, setTasks] = useState<toDoTask[]>([]);
   const [newTaskName, setNewTaskName] = useState("");
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,6 +31,11 @@ const ToDoList = () => {
       setTasks([...tasks, newTask]);
       setNewTaskName("");
     }
+  };
+  const removeTask = (taskID: number) => {
+    const filteredTasks = tasks.filter((task) => task.id != taskID);
+    console.log(filteredTasks);
+    setTasks(filteredTasks);
   };
 
   return (
@@ -90,10 +90,11 @@ const ToDoList = () => {
                   </div>
                   <p>{task.title}</p>
                 </div>
-                <button>
-                  <div className="rounded-full border-gray-400 text-lg border p-1">
-                    <CgClose className="text-gray-400" />
-                  </div>
+                <button
+                  className="rounded-full border-gray-400 text-lg border p-2"
+                  onClick={() => removeTask(task.id)}
+                >
+                  <CgClose className="text-gray-400" />
                 </button>
               </li>
             );
