@@ -1,10 +1,12 @@
 import List from "./components/shfter-V1/List";
+// import ToDoList from "./components/shifter-V2/ToDoList";
 
 function App() {
   return (
-    <div className="flex justify-center align-middle p-20">
+    <>
       <List />
-    </div>
+      {/* <ToDoList /> */}
+    </>
   );
 }
 
